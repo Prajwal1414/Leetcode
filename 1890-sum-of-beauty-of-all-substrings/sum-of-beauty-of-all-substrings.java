@@ -1,36 +1,27 @@
 class Solution {
     public int beautySum(String s) {
-        
-        int totalBeauty = 0;
-        int n = s.length();
+        int beauty = 0;
 
-        for(int i = 0 ; i < n; i++){
+        for(int i = 0 ; i < s.length(); i++){
+            int[] freq = new int[26];
             int maxFreq = 0;
             int minFreq = 0;
-            HashMap<Character, Integer> map = new HashMap<>();
 
-            for(int j = i ; j < n; j++){
+            for(int j = i ; j < s.length(); j++){
                 char c = s.charAt(j);
-                map.put(c, map.getOrDefault(c, 0) + 1);
+                freq[c - 'a']++;
 
-                int currentFreq = map.get(c);
-                maxFreq = Math.max(maxFreq, currentFreq);
-
-                if(map.size() == 1){
-                    minFreq = currentFreq;
-                }
-                else{
-                    minFreq = Integer.MAX_VALUE;
-                    for(int freq : map.values()){
-                        minFreq = Math.min(freq, minFreq);
-                    }
+                maxFreq = 0;
+                minFreq = Integer.MAX_VALUE;
+                for(int f : freq ){
+                    maxFreq = Math.max(maxFreq, f);
+                    if(f > 0) minFreq = Math.min(minFreq, f);
                 }
 
-                totalBeauty += maxFreq - minFreq;
+                beauty += maxFreq - minFreq;
             }
-
-
         }
-            return totalBeauty;
+
+        return beauty;
     }
 }
