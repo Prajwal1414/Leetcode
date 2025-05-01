@@ -3,7 +3,6 @@ class Solution {
         Arrays.sort(nums);
 
         List<List<Integer>> ans = new ArrayList<>();
-        HashSet<List<Integer>> set = new HashSet<>();
         int n = nums.length;
         for (int i = 0; i < nums.length - 3; i++) {
 
@@ -21,7 +20,7 @@ class Solution {
                     long comp = (long)target - (long)(nums[i] + nums[j]);
 
                     if (sum == comp) {
-                        set.add(new ArrayList<>(Arrays.asList(nums[i], nums[j], nums[left], nums[right])));
+                        ans.add(new ArrayList<>(Arrays.asList(nums[i], nums[j], nums[left], nums[right])));
                         while (left < right && nums[left] == nums[left + 1])
                             left++;
                         while (left < right && nums[right] == nums[right - 1])
@@ -37,10 +36,7 @@ class Solution {
 
             }
         }
-        System.out.print(set);
-        for (List<Integer> list : set) {
-            ans.add(list);
-        }
+        
         return ans;
     }
 }
