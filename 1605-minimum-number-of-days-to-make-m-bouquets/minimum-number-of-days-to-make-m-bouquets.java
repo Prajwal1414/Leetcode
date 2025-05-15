@@ -2,43 +2,49 @@ import java.util.*;
 
 class Solution {
     public int minDays(int[] bloomDay, int m, int k) {
-        OptionalInt min = Arrays.stream(bloomDay).min();
-        OptionalInt max = Arrays.stream(bloomDay).max();
-        int low = min.getAsInt();
-        int high = max.getAsInt();
+        int low = Integer.MAX_VALUE;
+        int high = Integer.MIN_VALUE;
+        
+        for(int i = 0 ; i < bloomDay.length; i++){
+            low = Math.min(low, bloomDay[i]); 
+            high = Math.max(high, bloomDay[i]);
+        }
+
         int ans = -1;
+        if((double) m * (double) k > bloomDay.length) return - 1;
+
         while (low <= high) {
             int mid = low + (high - low) / 2;
-            int count = countBloomed(bloomDay, mid, k);
 
-            if (count >= m) {
-                ans = mid;
+            if(possible(bloomDay, mid, m , k)){
                 high = mid - 1;
-            } else
+            }
+            else{
                 low = mid + 1;
+            }
 
         }
-        return ans;
+        return low;
     }
 
-    public int countBloomed(int[] arr, int day, int k) {
+    public boolean possible(int[] arr, int day, int m, int k ){
         int count = 0;
-        int consecutive = 0;
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] <= day) {
-                consecutive++;
-                if (consecutive == k) {
-                    count++;
-                    consecutive = 0;
-                }
+        int no = 0;
 
-            } else {
-                consecutive = 0;
+        for(int i = 0 ; i < arr.length; i++){
+            if(arr[i] <= day){
+                count++;    
+            }
+            else{
+                no += count / k;
+                count = 0;
             }
         }
+        no += count / k;
 
-        System.out.println("For day : " + day + "THe count is : " + count);
-
-        return count;
+        if(no >= m) return true;
+        else return false;
     }
+
+    
 }
