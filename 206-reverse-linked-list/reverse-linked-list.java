@@ -20,10 +20,9 @@ class Solution {
             node = node.next;
         }
 
-
-        ListNode newHead = new ListNode(st.pop());
-        System.out.println(newHead.val);
-        node = newHead;
+        head.val = st.pop();
+        System.out.println(head.val);
+        node = head;
         int n = st.size();
         for(int i = 0 ; i < n; i++){
             node.next = new ListNode(st.pop());
@@ -31,6 +30,6 @@ class Solution {
             System.out.println(node.val);
         }
 
-        return newHead;
+        return head;
     }
 }
