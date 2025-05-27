@@ -9,20 +9,16 @@
  * }
  */
 class Solution {
+    //Recursion
     public ListNode reverseList(ListNode head) {
         if(head == null || head.next == null) return head;
 
-        ListNode prev = null;
+        ListNode newHead = reverseList(head.next);
+
         ListNode front = head.next;
-        ListNode curr = head;
+        front.next = head;
+        head.next = null;
 
-        while(curr != null){
-            front = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = front;
-        }
-
-        return prev;
+        return newHead;
     }
 }
