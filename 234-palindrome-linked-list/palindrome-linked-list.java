@@ -10,29 +10,43 @@
  */
 class Solution {
     public boolean isPalindrome(ListNode head) {
-        Stack<Integer> stack = new Stack<>();
-        StringBuilder pal = new StringBuilder();
-        StringBuilder rev = new StringBuilder();
+        if(head == null || head.next == null ) return true;
 
-        if(head == null) return false;
-        if(head.next == null) return true;
+        ListNode slow = head, fast = head;
 
-        ListNode curr = head;
-
-        while(curr != null){
-            stack.push(curr.val);
-            pal.append(curr.val);
-            curr = curr.next;
+        while(fast.next != null && fast.next.next != null ){
+            slow = slow.next;
+            fast = fast.next.next;
         }
+
+        ListNode newHead = reverse(slow.next);
+        ListNode first = head;
+        ListNode second = newHead;
+
+        while(second != null){
+            if(first.val != second.val){
+                reverse(newHead);
+                return false;
+            }
+            first = first.next;
+            second = second.next; 
+        }
+
+        reverse(newHead);
+        return true;
+    }
+
+    public ListNode reverse(ListNode head){
+
+        if(head == null || head.next == null) return head;
+
+        ListNode newHead = reverse(head.next);
+
+        ListNode front = head.next;
+        front.next = head;
+        head.next = null;
+
+        return newHead;
         
-
-        while(!stack.isEmpty()){
-            rev.append(stack.pop());
-        }
-        System.out.println("Rev is: " +rev+ " Pal is:  " +pal);
-        if(pal.toString().equals(rev.toString())) return true;
-        return false;
-
-
     }
 }
