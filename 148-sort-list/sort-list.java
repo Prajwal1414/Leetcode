@@ -12,23 +12,62 @@ class Solution {
     public ListNode sortList(ListNode head) {
         if(head == null || head.next == null) return head;
 
-        List<Integer> list = new ArrayList<>();
-        ListNode temp = head;
+        ListNode middle = findMiddle(head);
+        ListNode right = middle.next;
+        ListNode left = head;
+        middle.next = null;
 
-        while(temp != null ){
-            list.add(temp.val);
-            temp = temp.next;
+        left = sortList(left);
+        right = sortList(right);
+
+        return merge(left,right);
+
+
+    }
+
+
+    public ListNode merge(ListNode left, ListNode right){
+        ListNode dNode = new ListNode(-1);
+        ListNode temp = dNode;
+        ListNode t1 = left;
+        ListNode t2 = right;
+
+        while(t1 != null && t2 != null){
+            if(t1.val <= t2.val){
+                temp.next = t1;
+                temp = t1;
+                t1 = t1.next;
+            }
+            else{
+                temp.next = t2;
+                temp = t2;
+                t2 = t2.next;
+            }
+
         }
 
-        System.out.println(list);
-
-        Collections.sort(list);
-        temp = head;
-        for(int i = 0 ; i < list.size(); i++){
-            temp.val = list.get(i);
-            temp = temp.next;
+        if(t1 != null){
+            temp.next = t1;
+        }
+        else{
+            temp.next = t2;
         }
 
-        return head;
+        dNode = dNode.next;
+        return dNode;
+    }
+
+    public ListNode findMiddle(ListNode head){
+        if(head == null || head.next == null) return head;
+
+        ListNode slow = head;
+        ListNode fast = head.next;
+
+        while(fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        return slow;
     }
 }
